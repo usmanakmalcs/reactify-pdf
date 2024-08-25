@@ -5,6 +5,7 @@ import { DYNAMIC_QUESTION_TYPE } from "../constant";
 import { updateField } from "../helper";
 
 import styles from "./styles.module.scss";
+import { PageField } from "./PageField/PageField";
 
 interface PDFEditorFieldRendererProps {
   field: any;
@@ -77,11 +78,11 @@ export const FieldRenderer = ({
         border: isStrikeThrough
           ? `${field.strokeWidth}px solid rgb(${field.strokeColor?.r}, ${field.strokeColor?.g}, ${field.strokeColor?.b})`
           : `2px solid #015CB9`,
-        background: isHighlighted && !isStrikeThrough ? undefined : "#fff",
+        background: "#4673d11a",
       }}
-      onResizeStart={setSelectedField}
+      onResizeStart={() => setSelectedField(field)}
       onDragStart={() => {
-        setSelectedField();
+        setSelectedField(field);
       }}
       bounds="parent"
       onDragStop={(e, d) => {
@@ -91,6 +92,7 @@ export const FieldRenderer = ({
           x: x / scale,
           y: y / scale,
         };
+        setSelectedField(undefined);
 
         updateField(data, index, pageNumber);
       }}
@@ -98,12 +100,17 @@ export const FieldRenderer = ({
         const width = parseInt(ref.style.width) / scale;
         const height = parseInt(ref.style.height) / scale;
 
-        updateField({
-          width,
-          height,
-          x: position.x / scale,
-          y: position.y / scale,
-        },index, pageNumber);
+        setSelectedField(undefined);
+        updateField(
+          {
+            width,
+            height,
+            x: position.x / scale,
+            y: position.y / scale,
+          },
+          index,
+          pageNumber
+        );
       }}
       dragGrid={[1, 1]}
       resizeGrid={[1, 1]}
@@ -118,7 +125,13 @@ export const FieldRenderer = ({
         right: midGrabPointStyle,
       }}
     >
-      <div>{field.type}</div>
+      <PageField
+        field={field}
+        isHighlighted={isHighlighted}
+        setSelectedField={setSelectedField}
+        index={index}
+        pageNumber={pageNumber}
+      />
     </Rnd>
   );
 };

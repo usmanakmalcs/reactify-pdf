@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
-import { DndProvider } from 'react-dnd-multi-backend';
-import { HTML5toTouch } from 'rdndmb-html5-to-touch';
+import { DndProvider } from "react-dnd-multi-backend";
+import { HTML5toTouch } from "rdndmb-html5-to-touch";
 
 //Loading PDF
 pdfjs.GlobalWorkerOptions.workerSrc = `/pdf.worker.min.mjs`;
@@ -28,25 +28,30 @@ export const PrintPDF = () => {
     <DndProvider options={HTML5toTouch}>
       <div className={styles.pdfContainer}>
         <div className={styles.topBarWrapper}></div>
-        <TopBar/>
+        <TopBar />
         <div className={styles.documentContainer}>
-          <Document
-            file={PdfDoc}
-            onLoadSuccess={onDocumentLoadSuccess}
-            className={styles.pdfDocument}
-          >
-            {pages.map((page) => (
-              <Page
-                pageNumber={page + 1}
-                className={styles.pdfPage}
-                renderAnnotationLayer={false}
-                renderTextLayer={false}
-                key={page}
-              >
-                <PageEditor pageNumber={page + 1} />
-              </Page>
-            ))}
-          </Document>
+          <div className={styles.pdfDocument}>
+            <Document file={PdfDoc} onLoadSuccess={onDocumentLoadSuccess}>
+              {pages.map((page, pageIndex) => {
+                return (
+                  <Page
+                    pageNumber={page + 1}
+                    className={styles.pdfPage}
+                    renderAnnotationLayer={false}
+                    renderTextLayer={false}
+                    key={page}
+                  >
+                    <div
+                      className={styles.renderFieldsContainer}
+                      key={`page-field-container-0-${pageIndex}`}
+                    >
+                      <PageEditor pageNumber={page + 1} />
+                    </div>
+                  </Page>
+                );
+              })}
+            </Document>
+          </div>
         </div>
       </div>
     </DndProvider>

@@ -2,7 +2,7 @@
   border-radius: 100%;
   border: 4px solid #4673d1;
   background-color: white;
-  transform: scale(0.5);
+  transform: scale(0.1);
 }
 
 .line {
@@ -23,9 +23,11 @@
 
 .fieldContainer {
   background-color: #fff;
-  padding: 0;
+  padding: 0 0 0 10px;
   z-index: 1000;
   border-radius: 4px;
+
+  font-size: .875rem;
 }
 
 .strikeThroughFieldContainer {

@@ -46,7 +46,7 @@ export const PageEditor = (props: PageEditorProps) => {
       });
 
       if (outsideClicked) {
-        console.log("Outside Clicked");
+        setSelectedField(undefined);
       }
     };
 
