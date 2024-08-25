@@ -5,7 +5,7 @@ import { useDrop } from "react-dnd";
 import { v4 as uuidv4 } from "uuid";
 
 import styles from "./style.module.scss";
-import { getDefaultFieldSize, getFields, saveField } from "./helper";
+import { deleteField, getDefaultFieldSize, getFields, saveField } from "./helper";
 import { FieldRenderer } from "./FieldRenderer";
 import { DYNAMIC_QUESTION_TYPE } from "./constant";
 
@@ -18,8 +18,12 @@ let listenerAttached = false;
 export const PageEditor = (props: PageEditorProps) => {
   const { pageNumber } = props;
 
+
   const ref = useRef<HTMLSpanElement>(null);
   const [selectedField, setSelectedField] = useState();
+
+  const [_, setFields] = useState();
+
 
   useEffect(() => {
     if (listenerAttached) return;
@@ -59,6 +63,7 @@ export const PageEditor = (props: PageEditorProps) => {
       listenerAttached = false;
     };
   }, []);
+
 
   const [{ isOver }, dropRef] = useDrop({
     accept: Object.values(DYNAMIC_QUESTION_TYPE),
@@ -100,6 +105,10 @@ export const PageEditor = (props: PageEditorProps) => {
     },
   });
 
+  const onDeleteField = (UUID) => {
+    const updatedFields = deleteField(UUID, pageNumber);
+    setFields(updatedFields)
+  }
 
   return (
     <div className={styles.pageContainer} ref={dropRef}>
@@ -114,6 +123,7 @@ export const PageEditor = (props: PageEditorProps) => {
               scale={1}
               selectedField={selectedField}
               setSelectedField={setSelectedField}
+              onDeleteField={onDeleteField}
             />
           );
         })}

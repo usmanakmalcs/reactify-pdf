@@ -89,7 +89,7 @@ export const deleteField = (fieldUUID, pageNumber) => {
       delete fields[pageNumber]
     }
 
-    console.log({fields});
     setFields(fields);
+    return fields;
   }
 };

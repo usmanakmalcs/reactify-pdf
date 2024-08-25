@@ -6,6 +6,7 @@ import { deleteField, updateField } from "../helper";
 import styles from "./styles.module.scss";
 import { PageField } from "./PageField/PageField";
 import { ICON_VARIANT_TYPE, Icons } from "../../Icons";
+import { useState } from "react";
 
 interface PDFEditorFieldRendererProps {
   field: any;
@@ -14,16 +15,19 @@ interface PDFEditorFieldRendererProps {
   pageNumber: number;
   selectedField: any;
   setSelectedField: any;
+  onDeleteField: any;
 }
 
 export const FieldRenderer = ({
-  field,
+  field: fieldItem,
   pageNumber,
   index,
   scale,
   selectedField,
   setSelectedField,
+  onDeleteField,
 }: PDFEditorFieldRendererProps) => {
+  const [field, setField] = useState(fieldItem);
   const width = field.width * scale;
   const height = field.height * scale;
   const x = field.x * scale;
@@ -32,22 +36,17 @@ export const FieldRenderer = ({
   const isHighlighted =
     selectedField?.UUID && selectedField?.UUID === field?.UUID;
 
-
   const grabPointStyle = isHighlighted ? styles.grabPoint : undefined;
   const midGrabPointStyle = isHighlighted ? styles.line : undefined;
 
- 
-
   const actionButtons = () => {
-    // if (!isHighlighted) return;
-
     const actionButtons = [
       {
         variant: ICON_VARIANT_TYPE.Delete,
         onClick: (e) => {
           e.preventDefault();
-          deleteField(field.UUID, pageNumber);
-        }
+          onDeleteField(field.UUID);
+        },
       },
     ];
 
@@ -87,7 +86,7 @@ export const FieldRenderer = ({
       minHeight={20}
       minWidth={20}
       style={{
-        border:`2px solid #015CB9`,
+        border: `2px solid #015CB9`,
         background: "#4673d11a",
       }}
       onResizeStart={() => setSelectedField(field)}
@@ -102,6 +101,8 @@ export const FieldRenderer = ({
           x: x / scale,
           y: y / scale,
         };
+
+        setField((prev) => ({ ...prev, ...data }));
         setSelectedField(undefined);
 
         updateField(data, index, pageNumber);
@@ -111,16 +112,16 @@ export const FieldRenderer = ({
         const height = parseInt(ref.style.height) / scale;
 
         setSelectedField(undefined);
-        updateField(
-          {
-            width,
-            height,
-            x: position.x / scale,
-            y: position.y / scale,
-          },
-          index,
-          pageNumber
-        );
+
+        const data = {
+          width,
+          height,
+          x: position.x / scale,
+          y: position.y / scale,
+        };
+
+        setField((prev) => ({ ...prev, ...data }));
+        updateField(data, index, pageNumber);
       }}
       dragGrid={[1, 1]}
       resizeGrid={[1, 1]}
