@@ -21,7 +21,7 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "paths": {},
-    "allowImportingTsExtensions": false
+    "allowImportingTsExtensions": true
   },
   "include": ["src", "src/**/*"]
 }
