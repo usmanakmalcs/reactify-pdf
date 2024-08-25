@@ -39,7 +39,7 @@ export const saveField = (newField, pageNumber) => {
   localStorage.setItem("fields", JSON.stringify(fields));
 };
 
-export const setField = (fields) => {
+export const setFields = (fields) => {
   localStorage.setItem("fields", JSON.stringify(fields));
 };
 
@@ -62,7 +62,7 @@ export const updateField = (fieldProps, index, pageNumber) => {
       ...parsedFields[pageNumber][index],
       ...fieldProps,
     };
-    setField(parsedFields);
+    setFields(parsedFields);
   }
 };
 
@@ -71,6 +71,25 @@ export const saveFieldValue = (value, index, pageNumber) => {
   if (fields) {
     fields = JSON.parse(fields);
     fields[pageNumber][index].value = value;
-    setField(fields);
+    setFields(fields);
+  }
+};
+
+export const deleteField = (fieldUUID, pageNumber) => {
+  let fields: any = localStorage.getItem("fields");
+  if (fields) {
+    fields = JSON.parse(fields);
+    const filteredFields = fields[pageNumber].filter(
+      ({UUID}) => UUID !== fieldUUID
+    );
+
+    if (filteredFields.length) {
+      fields[pageNumber] = filteredFields;
+    }else {
+      delete fields[pageNumber]
+    }
+
+    console.log({fields});
+    setFields(fields);
   }
 };

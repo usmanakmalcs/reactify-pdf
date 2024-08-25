@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useDrop } from "react-dnd";
 import { v4 as uuidv4 } from "uuid";
 
@@ -99,6 +99,7 @@ export const PageEditor = (props: PageEditorProps) => {
       }
     },
   });
+
 
   return (
     <div className={styles.pageContainer} ref={dropRef}>

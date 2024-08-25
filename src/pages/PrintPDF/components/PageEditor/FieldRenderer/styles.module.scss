@@ -37,3 +37,34 @@
 .highlightedField {
   z-index: 99999;
 }
+
+
+.actionButtons {
+  display: flex;
+  width: max-content;
+  margin-left: auto;
+  margin-top: 6px;
+
+
+  border-radius: 8px;
+  height: 36px;
+  position: absolute;
+  right: 0px;
+
+  .actionButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ff576d;
+    
+    width: 36px;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    border-radius: inherit;
+
+    &:hover {
+      background-color: #ec455e;
+    }
+  }
+}

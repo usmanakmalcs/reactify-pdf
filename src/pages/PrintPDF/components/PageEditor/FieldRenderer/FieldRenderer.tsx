@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import classNames from "classnames";
 import { Rnd } from "react-rnd";
-import { DYNAMIC_QUESTION_TYPE } from "../constant";
-import { updateField } from "../helper";
+import { deleteField, updateField } from "../helper";
 
 import styles from "./styles.module.scss";
 import { PageField } from "./PageField/PageField";
+import { ICON_VARIANT_TYPE, Icons } from "../../Icons";
 
 interface PDFEditorFieldRendererProps {
   field: any;
@@ -32,24 +32,38 @@ export const FieldRenderer = ({
   const isHighlighted =
     selectedField?.UUID && selectedField?.UUID === field?.UUID;
 
-  const isStrikeThrough = field.type === DYNAMIC_QUESTION_TYPE.StrikeThrough;
 
   const grabPointStyle = isHighlighted ? styles.grabPoint : undefined;
   const midGrabPointStyle = isHighlighted ? styles.line : undefined;
 
-  const rndResizeProps = {
-    ...(isStrikeThrough && {
-      enableResizing: {
-        bottom: false,
-        bottomLeft: false,
-        bottomRight: false,
-        left: true,
-        right: true,
-        top: false,
-        topLeft: false,
-        topRight: false,
+ 
+
+  const actionButtons = () => {
+    // if (!isHighlighted) return;
+
+    const actionButtons = [
+      {
+        variant: ICON_VARIANT_TYPE.Delete,
+        onClick: (e) => {
+          e.preventDefault();
+          deleteField(field.UUID, pageNumber);
+        }
       },
-    }),
+    ];
+
+    return (
+      <div className={styles.actionButtons}>
+        {actionButtons.map((button) => (
+          <div
+            key={button.variant}
+            className={styles.actionButton}
+            onClick={button.onClick}
+          >
+            <Icons variant={button.variant} />
+          </div>
+        ))}
+      </div>
+    );
   };
 
   return (
@@ -59,11 +73,9 @@ export const FieldRenderer = ({
         styles.fieldContainer,
         {
           [styles.highlightedField]: isHighlighted,
-          [styles.strikeThroughFieldContainer]: isStrikeThrough,
         },
         "prevent-user-select"
       )}
-      {...rndResizeProps}
       default={{
         x,
         y,
@@ -72,12 +84,10 @@ export const FieldRenderer = ({
       }}
       position={{ x, y }}
       size={{ height, width }}
-      minHeight={isStrikeThrough ? 0 : 20}
+      minHeight={20}
       minWidth={20}
       style={{
-        border: isStrikeThrough
-          ? `${field.strokeWidth}px solid rgb(${field.strokeColor?.r}, ${field.strokeColor?.g}, ${field.strokeColor?.b})`
-          : `2px solid #015CB9`,
+        border:`2px solid #015CB9`,
         background: "#4673d11a",
       }}
       onResizeStart={() => setSelectedField(field)}
@@ -132,6 +142,7 @@ export const FieldRenderer = ({
         index={index}
         pageNumber={pageNumber}
       />
+      {actionButtons()}
     </Rnd>
   );
 };
