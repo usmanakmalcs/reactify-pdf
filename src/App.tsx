@@ -1,6 +1,6 @@
 
 import './App.css'
-import { PrintPDF } from './components'
+import { PrintPDF } from './pages'
 
 function App() {
 
