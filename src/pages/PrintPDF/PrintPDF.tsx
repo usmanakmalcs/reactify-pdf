@@ -27,7 +27,10 @@ export const PrintPDF = () => {
   return (
     <DndProvider options={HTML5toTouch}>
       <div className={styles.pdfContainer}>
-        <div className={styles.topBarWrapper}></div>
+        <div className={styles.topBarWrapper}>
+          <img src="/logo.png"/>
+          <div>Reactify PDF</div>
+        </div>
         <TopBar />
         <div className={styles.documentContainer}>
           <div className={styles.pdfDocument}>

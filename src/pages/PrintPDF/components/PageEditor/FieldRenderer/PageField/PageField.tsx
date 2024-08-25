@@ -23,9 +23,11 @@ export const PageField = (props) => {
             onBlur: (e: any) => {
               const value = e.target.value;
               saveFieldValue(value, index, pageNumber);
+              setSelectedField(undefined);
             },
 
             defaultValue: value,
+            placeholder: 'Enter Text'
           }
         : {}),
     };

@@ -1,9 +1,25 @@
 .pdfContainer {
   .topBarWrapper {
-    width: 100%;
+    width: inherit;
     background-color: #015cb9;
     color: #fff;
-    height: 48px;
+
+    padding: 15px 0px 15px 40px;
+    font-size: 1.5rem;
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    img {
+      width: 30px;
+      vertical-align: middle;
+    }
+
+    @media screen and (max-width: 576px) {
+      padding: 12px 0px 12px 20px;
+      font-size: 1rem;
+    }
   }
 
   .toolbarWrapper {
@@ -28,12 +44,18 @@
       width: -webkit-fit-content;
       width: -moz-fit-content;
       width: fit-content;
+      overflow: hidden;
 
       .pdfPage {
         margin-bottom: 20px;
         border: 1px solid #cecece;
         width: 700px;
         height: 900px;
+
+        @media screen and (max-width: 768px) {
+          width: 100%;
+          max-width: 560px;
+        }
 
         canvas {
           width: inherit !important;
